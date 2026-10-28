@@ -1,0 +1,870 @@
+FINAL MASTER PROMPT — COMPLETE JAPANESE SSW AGRICULTURE INTERVIEW APP
+
+Build the full application from the first step. No sample. No missing data. Fix Sinhala rendering.
+
+You are a senior full-stack React/TypeScript engineer, Japanese SSW Agriculture interview coach, Japanese speech technology engineer, Sinhala Unicode rendering specialist, and mobile-first PWA developer.
+
+Build a complete, polished, fully functional Japanese SSW Agriculture Interview Training App from scratch in Google AI Studio Build mode.
+
+The initial implementation MUST contain all 35 question-and-answer records embedded below. Do not merely create an empty question library, generate a sample, or tell the user to add the content later.
+
+The candidate’s background is finance and debt recovery, with family agricultural experience. The app must help this candidate prepare to explain that background naturally in a Japanese agriculture job interview.
+
+⸻
+
+PART A — NON-NEGOTIABLE REQUIREMENTS
+
+1. Build the complete application, not a prototype, demo, mockup, or MVP.
+2. Include all 35 question records and all 35 matching model answers in the initial source code.
+3. Preserve every supplied Japanese sentence and its associated Sinhala pronunciation and meaning in the embedded data.
+4. Do not remove records, silently rewrite answers, or generate replacements for the supplied records.
+5. Do not display Japanese characters or Romaji on the normal learner screens.
+6. Display Sinhala-script pronunciation and Sinhala meaning by default.
+7. Keep Japanese source text internally for accurate Japanese TTS.
+8. Fix Sinhala Unicode rendering errors throughout the entire application.
+9. Make all visible buttons, navigation items, audio controls, and progress actions functional.
+10. Use real browser capabilities and real configured APIs. Never fake successful audio, microphone access, or AI responses.
+11. Build and run available checks before reporting completion.
+12. Provide the complete project source, README, test report, and downloadable ZIP when supported.
+
+PART B — COMPLETE EMBEDDED INTERVIEW DATA
+
+Create a source file such as src/data/interviewData.ts containing exactly 35 stable question IDs: agri-001 through agri-035.
+
+Use the following fields for every record:
+
+* id
+* category
+* questionJapanese
+* questionSinhalaPronunciation
+* questionSinhalaMeaning
+* answerJapanese
+* answerSinhalaPronunciation
+* answerSinhalaMeaning
+* sourceStatus
+* reviewStatus
+
+Set sourceStatus to curated-practice, and reviewStatus to human-review-recommended.
+
+The Japanese source text is the speech source. Sinhala pronunciation is a learner aid, not a replacement for Japanese text. The Sinhala translations and transliterations should be reviewed for linguistic accuracy before describing them as professionally verified.
+
+The 35 required question-and-answer records
+
+01 — Self-introduction
+
+ID: agri-001
+
+Question Japanese: 自己紹介をお願いします。
+
+Question Sinhala pronunciation: ජිකෝ ෂෝකායි ඔ ඔනෙගයි ෂිමස්.
+
+Question Sinhala meaning: කරුණාකර ඔබ ගැන හඳුන්වා දෙන්න.
+
+Answer Japanese: はじめまして。ラヒル・マドゥサンカと申します。スリランカのマータラ出身です。金融会社で働いており、家族の農業を手伝った経験もあります。本日はよろしくお願いいたします。
+
+Answer Sinhala pronunciation: හජිමෙමෂිතෙ. රහිරු මදුසන්කා තො මෝෂිමස්. සුරිරංකා නො මාතාරා ෂුෂින් දෙස්. කිංයූ ගයිෂා දෙ හතාරයිතෙ ඔරි, කාසොකු නො නොග්යෝ ඔ තෙත්සුදත්ත කෙයිකෙන් මො අරිමස්. හොන්ජිත්සු වා යොරොෂිකු ඔනෙගයි ඉතාෂිමස්.
+
+Answer Sinhala meaning: හමුවීම සතුටක්. මගේ නම ලහිරු මදුසන්ක. මම ශ්‍රී ලංකාවේ මාතර ප්‍රදේශයෙන් පැමිණි කෙනෙක්. මම මූල්‍ය සමාගමක සේවය කරන අතර පවුලේ කෘෂිකාර්මික කටයුතුවලට උදව් කළ අත්දැකීම් ද තිබෙනවා. අද ඔබ සමඟ හොඳින් කටයුතු කිරීමට බලාපොරොත්තු වෙනවා.
+
+02 — Why Japan?
+
+ID: agri-002
+
+Question Japanese: なぜ日本で働きたいですか。
+
+Question Sinhala pronunciation: නාසෙ නිහොන් දෙ හතාරකි තයි දෙස් කා.
+
+Question Sinhala meaning: ඔබට ජපානයේ වැඩ කිරීමට අවශ්‍ය ඇයි?
+
+Answer Japanese: 日本の農業技術や仕事の進め方を学びたいからです。日本で一生懸命働き、経験を積んで成長したいです。
+
+Answer Sinhala pronunciation: නිහොන් නො නොග්යෝ ගිජුත්සු යා ෂිගොතො නො සුසුමෙකාතා ඔ මනබිතයි කරා දෙස්. නිහොන් දෙ ඉෂ්ෂෝකෙන්මෙයි හතාරකි, කෙයිකෙන් ඔ සුන්දෙ සෙයිචෝ ෂිතයි දෙස්.
+
+Answer Sinhala meaning: ජපානයේ කෘෂිකාර්මික තාක්ෂණය සහ වැඩ කරන ක්‍රම ඉගෙනගැනීමට මට අවශ්‍යයි. ජපානයේ උනන්දුවෙන් වැඩ කර අත්දැකීම් ලබාගෙන දියුණු වීමට කැමතියි.
+
+03 — Why agriculture?
+
+ID: agri-003
+
+Question Japanese: なぜ農業の仕事を選びましたか。
+
+Question Sinhala pronunciation: නාසෙ නොග්යෝ නො ෂිගොතො ඔ එරබිමෂිතා කා.
+
+Question Sinhala meaning: ඔබ කෘෂිකර්ම රැකියාව තෝරාගත්තේ ඇයි?
+
+Answer Japanese: 家族の農業を手伝った経験があり、農作物を育てる仕事に興味があります。日本で農業の知識と技術を身につけたいです。
+
+Answer Sinhala pronunciation: කාසොකු නො නොග්යෝ ඔ තෙත්සුදත්ත කෙයිකෙන් ගා අරි, නොසාකුබත්සු ඔ සොදතෙරු ෂිගොතො නි කියෝමි ගා අරිමස්. නිහොන් දෙ නොග්යෝ නො චිෂිකි තො ගිජුත්සු ඔ මි නි ත්සුකෙතයි දෙස්.
+
+Answer Sinhala meaning: පවුලේ කෘෂිකාර්මික කටයුතුවලට උදව් කළ අත්දැකීම් මට තිබෙනවා. වගා කටයුතු ගැන උනන්දුවක් ඇති නිසා ජපානයේ කෘෂිකාර්මික දැනුම සහ තාක්ෂණය ඉගෙනගැනීමට කැමතියි.
+
+04 — Current job
+
+ID: agri-004
+
+Question Japanese: 今、どんな仕事をしていますか。
+
+Question Sinhala pronunciation: ඉමා, දොන්නා ෂිගොතො ඔ ෂිතෙ ඉමස් කා.
+
+Question Sinhala meaning: ඔබ දැන් මොන වගේ රැකියාවක් කරනවාද?
+
+Answer Japanese: 金融会社で働いています。お客様への対応や返済に関する仕事をしています。
+
+Answer Sinhala pronunciation: කිංයූ ගයිෂා දෙ හතාරයිතෙ ඉමස්. ඔක්‍යාකුසමා එ නො තයිඕ යා හෙන්සායි නි කන්සුරු ෂිගොතො ඔ ෂිතෙ ඉමස්.
+
+Answer Sinhala meaning: මම මූල්‍ය සමාගමක සේවය කරනවා. පාරිභෝගිකයන් සමඟ කටයුතු කිරීම සහ ගෙවීම් සම්බන්ධ වැඩ කරනවා.
+
+05 — Changing careers
+
+ID: agri-005
+
+Question Japanese: なぜ金融の仕事から農業に転職したいですか。
+
+Question Sinhala pronunciation: නාසෙ කිංයූ නො ෂිගොතො කරා නොග්යෝ නි තෙන්ෂොකු ෂිතයි දෙස් කා.
+
+Question Sinhala meaning: මූල්‍ය රැකියාවෙන් කෘෂිකර්මයට මාරු වීමට කැමති ඇයි?
+
+Answer Japanese: 金融の仕事で責任感やコミュニケーション能力を身につけました。家族の農業を手伝った経験もあるので、農業の仕事に挑戦したいです。
+
+Answer Sinhala pronunciation: කිංයූ නො ෂිගොතො දෙ සේකිනින්කන් යා කොමියුනිකේෂොන් නෝරියොකු ඔ මි නි ත්සුකෙමෂිතා. කාසොකු නො නොග්යෝ ඔ තෙත්සුදත්ත කෙයිකෙන් මො අරු නොදෙ, නොග්යෝ නො ෂිගොතො නි චෝසෙන් ෂිතයි දෙස්.
+
+Answer Sinhala meaning: මූල්‍ය රැකියාවෙන් වගකීමෙන් වැඩ කිරීම සහ සන්නිවේදන හැකියාවන් ලබාගත්තා. පවුලේ කෘෂිකාර්මික කටයුතුවලට උදව් කළ අත්දැකීම්ද ඇති නිසා කෘෂිකර්ම රැකියාවකට උත්සාහ කිරීමට කැමතියි.
+
+06 — Agricultural experience
+
+ID: agri-006
+
+Question Japanese: 農業の経験がありますか。
+
+Question Sinhala pronunciation: නොග්යෝ නො කෙයිකෙන් ගා අරිමස් කා.
+
+Question Sinhala meaning: ඔබට කෘෂිකාර්මික අත්දැකීම් තිබෙනවාද?
+
+Answer Japanese: はい。家族の農業を手伝い、野菜や唐辛子の栽培に関わった経験があります。
+
+Answer Sinhala pronunciation: හයි. කාසොකු නො නොග්යෝ ඔ තෙත්සුදායි, යසායි යා තෝගරෂි නො සයිබයි නි කකවත්ත කෙයිකෙන් ගා අරිමස්.
+
+Answer Sinhala meaning: ඔව්. පවුලේ කෘෂිකාර්මික කටයුතුවලට උදව් කරමින් එළවළු සහ මිරිස් වගාවට සම්බන්ධ වූ අත්දැකීම් මට තිබෙනවා.
+
+07 — Crops grown
+
+ID: agri-007
+
+Question Japanese: どんな作物を育てたことがありますか。
+
+Question Sinhala pronunciation: දොන්නා සකුමොත්සු ඔ සොදතෙතා කොතො ගා අරිමස් කා.
+
+Question Sinhala meaning: ඔබ මොන වගේ බෝග වගා කර තිබෙනවාද?
+
+Answer Japanese: 家族の農業で、野菜や唐辛子の栽培を手伝ったことがあります。
+
+Answer Sinhala pronunciation: කාසොකු නො නොග්යෝ දෙ, යසායි යා තෝගරෂි නො සයිබයි ඔ තෙත්සුදත්ත කොතො ගා අරිමස්.
+
+Answer Sinhala meaning: පවුලේ කෘෂිකාර්මික කටයුතුවලදී එළවළු සහ මිරිස් වගාවට උදව් කර තිබෙනවා.
+
+08 — Soil preparation
+
+ID: agri-008
+
+Question Japanese: 土づくりをしたことがありますか。
+
+Question Sinhala pronunciation: ත්සුචිසුකුරි ඔ ෂිතා කොතො ගා අරිමස් කා.
+
+Question Sinhala meaning: ඔබ පස සකස් කර තිබෙනවාද?
+
+Answer Japanese: はい。家族の農業を手伝ったとき、植える前の土の準備をした経験があります。
+
+Answer Sinhala pronunciation: හයි. කාසොකු නො නොග්යෝ ඔ තෙත්සුදත්ත තොකි, උඑරු මාඑ නො ත්සුචි නො ජුන්බි ඔ ෂිතා කෙයිකෙන් ගා අරිමස්.
+
+Answer Sinhala meaning: ඔව්. පවුලේ වගාවට උදව් කරන විට පැළ සිටුවීමට පෙර පස සකස් කිරීමේ අත්දැකීම් තිබෙනවා.
+
+09 — Planting seeds
+
+ID: agri-009
+
+Question Japanese: 種まきや苗の植え付けができますか。
+
+Question Sinhala pronunciation: තානෙමාකි යා නාඑ නො උඑත්සුකෙ ගා දෙකිමස් කා.
+
+Question Sinhala meaning: බීජ වැපිරීම සහ පැළ සිටුවීම කළ හැකිද?
+
+Answer Japanese: はい。基本的な種まきや苗の植え付けを手伝った経験があります。職場の方法をよく確認して作業します。
+
+Answer Sinhala pronunciation: හයි. කිහොන්තෙකිනා තානෙමාකි යා නාඑ නො උඑත්සුකෙ ඔ තෙත්සුදත්ත කෙයිකෙන් ගා අරිමස්. ෂොකුබා නො හෝහෝ ඔ යොකු කකුනින් ෂිතෙ සග්යෝ ෂිමස්.
+
+Answer Sinhala meaning: ඔව්. මූලික බීජ වැපිරීම සහ පැළ සිටුවීම සඳහා උදව් කළ අත්දැකීම් තිබෙනවා. සේවා ස්ථානයේ ක්‍රමය හොඳින් තහවුරු කරගෙන වැඩ කරනවා.
+
+10 — Irrigation
+
+ID: agri-010
+
+Question Japanese: 作物にどのように水をあげますか。
+
+Question Sinhala pronunciation: සකුමොත්සු නි දොනො යෝනි මිසු ඔ අගෙමස් කා.
+
+Question Sinhala meaning: බෝගවලට ඔබ ජලය ලබා දෙන්නේ කොහොමද?
+
+Answer Japanese: 作物や土の状態を確認して、必要な量の水をあげます。職場の指示に従います。
+
+Answer Sinhala pronunciation: සකුමොත්සු යා ත්සුචි නො ජෝතායි ඔ කකුනින් ෂිතෙ, හිත්සුයෝනා ර්යෝ නො මිසු ඔ අගෙමස්. ෂොකුබා නො ෂිජි නි ෂිතගයිමස්.
+
+Answer Sinhala meaning: බෝග සහ පසෙහි තත්ත්වය පරීක්ෂා කර අවශ්‍ය ප්‍රමාණයට ජලය ලබා දෙනවා. සේවා ස්ථානයේ උපදෙස් අනුගමනය කරනවා.
+
+11 — Fertiliser
+
+ID: agri-011
+
+Question Japanese: 肥料を使った経験がありますか。
+
+Question Sinhala pronunciation: හිරියෝ ඔ ත්සුකත්ත කෙයිකෙන් ගා අරිමස් කා.
+
+Question Sinhala meaning: පොහොර භාවිත කිරීමේ අත්දැකීම් තිබෙනවාද?
+
+Answer Japanese: はい。家族の農業で肥料を使う作業を手伝った経験があります。種類や量は指示を確認します。
+
+Answer Sinhala pronunciation: හයි. කාසොකු නො නොග්යෝ දෙ හිරියෝ ඔ ත්සුකවු සග්යෝ ඔ තෙත්සුදත්ත කෙයිකෙන් ගා අරිමස්. ෂුරුයි යා ර්යෝ වා ෂිජි ඔ කකුනින් ෂිමස්.
+
+Answer Sinhala meaning: ඔව්. පවුලේ වගාවේ පොහොර භාවිත කරන වැඩවලට උදව් කර තිබෙනවා. පොහොර වර්ගය සහ ප්‍රමාණය උපදෙස් අනුව තහවුරු කරගන්නවා.
+
+12 — Pest control
+
+ID: agri-012
+
+Question Japanese: 害虫や病気を見つけたら、どうしますか。
+
+Question Sinhala pronunciation: ගයිචූ යා බ්යෝකි ඔ මිත්සුකෙතාරා, දෝ ෂිමස් කා.
+
+Question Sinhala meaning: පළිබෝධ හෝ රෝගයක් දැක්කොත් මොකද කරන්නේ?
+
+Answer Japanese: すぐに責任者に報告します。自分で判断せず、指示に従って安全に対応します。
+
+Answer Sinhala pronunciation: සුගු නි සේකිනින්ෂා නි හෝකොකු ෂිමස්. ජිබුන් දෙ හන්දාන් සෙසු, ෂිජි නි ෂිතගත්තෙ අන්සෙන් නි තයිඕ ෂිමස්.
+
+Answer Sinhala meaning: වහාම වගකිවයුතු පුද්ගලයාට දැනුම් දෙනවා. තනිවම තීරණ නොගෙන උපදෙස් අනුව ආරක්ෂිතව කටයුතු කරනවා.
+
+13 — Harvesting
+
+ID: agri-013
+
+Question Japanese: 収穫の経験がありますか。
+
+Question Sinhala pronunciation: ෂූකාකු නො කෙයිකෙන් ගා අරිමස් කා.
+
+Question Sinhala meaning: අස්වැන්න නෙළීමේ අත්දැකීම් තිබෙනවාද?
+
+Answer Japanese: はい。家族の農業で収穫を手伝った経験があります。作物を傷つけないように注意します。
+
+Answer Sinhala pronunciation: හයි. කාසොකු නො නොග්යෝ දෙ ෂූකාකු ඔ තෙත්සුදත්ත කෙයිකෙන් ගා අරිමස්. සකුමොත්සු ඔ කිත්සුත්සුකෙනයි යෝනි චූයි ෂිමස්.
+
+Answer Sinhala meaning: ඔව්. පවුලේ වගාවේ අස්වැන්න නෙළීමට උදව් කර තිබෙනවා. බෝගවලට හානි නොවන ලෙස සැලකිලිමත් වෙනවා.
+
+14 — Sorting and packing
+
+ID: agri-014
+
+Question Japanese: 収穫した野菜の選別や梱包ができますか。
+
+Question Sinhala pronunciation: ෂූකාකු ෂිතා යසායි නො සෙන්බෙත්සු යා කොන්පෝ ගා දෙකිමස් කා.
+
+Question Sinhala meaning: අස්වැන්න නෙළූ එළවළු තෝරා වර්ග කිරීම සහ ඇසුරුම් කිරීම කළ හැකිද?
+
+Answer Japanese: はい。野菜を確認して、傷や大きさに注意しながら選別や梱包を手伝います。
+
+Answer Sinhala pronunciation: හයි. යසායි ඔ කකුනින් ෂිතෙ, කිත්සු යා ඕකිසා නි චූයි ෂිනාගරා සෙන්බෙත්සු යා කොන්පෝ ඔ තෙත්සුදයිමස්.
+
+Answer Sinhala meaning: ඔව්. එළවළු පරීක්ෂා කර හානි සහ ප්‍රමාණය ගැන සැලකිලිමත් වෙමින් තෝරා වර්ග කිරීම සහ ඇසුරුම් කිරීම සඳහා උදව් කරනවා.
+
+15 — Physical work
+
+ID: agri-015
+
+Question Japanese: 体力に自信がありますか。
+
+Question Sinhala pronunciation: තයිරියොකු නි ජිෂින් ගා අරිමස් කා.
+
+Question Sinhala meaning: ඔබේ ශාරීරික ශක්තිය ගැන විශ්වාසයක් තිබෙනවාද?
+
+Answer Japanese: はい。体調管理を大切にし、休憩と水分補給をしながら、一生懸命働きます。
+
+Answer Sinhala pronunciation: හයි. තයිචෝ කන්රි ඔ තයිසෙත්සු නි ෂි, කියූකේයි තො සුයිබුන් හොකියූ ඔ ෂිනාගරා, ඉෂ්ෂෝකෙන්මෙයි හතාරකිමස්.
+
+Answer Sinhala meaning: ඔව්. ශරීර සෞඛ්‍යය ගැන සැලකිලිමත් වෙමින්, විවේකය සහ ජලය පානය කිරීම නිසි ලෙස කරගෙන මහන්සියෙන් වැඩ කරනවා.
+
+16 — Safety
+
+ID: agri-016
+
+Question Japanese: 仕事中に安全のために何をしますか。
+
+Question Sinhala pronunciation: ෂිගොතොචූ නි අන්සෙන් නො තමේ නි නානි ඔ ෂිමස් කා.
+
+Question Sinhala meaning: වැඩ කරන අතරතුර ආරක්ෂාව සඳහා මොනවාද කරන්නේ?
+
+Answer Japanese: 作業の手順と安全ルールを守ります。危険を見つけたら、責任者に報告します。
+
+Answer Sinhala pronunciation: සග්යෝ නො තෙජුන් තො අන්සෙන් රූරු ඔ මාමරිමස්. කිකෙන් ඔ මිත්සුකෙතාරා, සේකිනින්ෂා නි හෝකොකු ෂිමස්.
+
+Answer Sinhala meaning: වැඩ කිරීමේ පියවර සහ ආරක්ෂක නීති අනුගමනය කරනවා. අනතුරක් දැක්කොත් වගකිවයුතු පුද්ගලයාට දැනුම් දෙනවා.
+
+17 — Teamwork
+
+ID: agri-017
+
+Question Japanese: チームで働くことができますか。
+
+Question Sinhala pronunciation: චීමු දෙ හතාරකු කොතො ගා දෙකිමස් කා.
+
+Question Sinhala meaning: කණ්ඩායමක් සමඟ වැඩ කළ හැකිද?
+
+Answer Japanese: はい。周りの人と協力し、分からないことは確認して、チームの目標を達成したいです。
+
+Answer Sinhala pronunciation: හයි. මවාරි නො හිත් තො ක්යෝර්යොකු ෂි, වකරානයි කොතො වා කකුනින් ෂිතෙ, චීමු නො මොකුහ්යෝ ඔ තසෙයි ෂිතයි දෙස්.
+
+Answer Sinhala meaning: ඔව්. අනෙක් අය සමඟ සහයෝගයෙන් වැඩ කර, නොතේරෙන දේ තහවුරු කරගෙන කණ්ඩායමේ අරමුණු ඉටු කිරීමට කැමතියි.
+
+18 — Japanese language
+
+ID: agri-018
+
+Question Japanese: 日本語をどのくらい勉強していますか。
+
+Question Sinhala pronunciation: නිහොන්ගෝ ඔ දොනො කුරයි බෙන්ක්යෝ ෂිතෙ ඉමස් කා.
+
+Question Sinhala meaning: ඔබ කොපමණ කාලයක් ජපන් භාෂාව ඉගෙනගෙන තිබෙනවාද?
+
+Answer Japanese: 日本語を勉強しています。仕事で必要な言葉や指示を理解できるように、これからも勉強を続けます。
+
+Answer Sinhala pronunciation: නිහොන්ගෝ ඔ බෙන්ක්යෝ ෂිතෙ ඉමස්. ෂිගොතො දෙ හිත්සුයෝනා කොතොබා යා ෂිජි ඔ රිකයි දෙකිරු යෝනි, කොරෙකරා මො බෙන්ක්යෝ ඔ ත්සුසුකෙමස්.
+
+Answer Sinhala meaning: මම ජපන් භාෂාව ඉගෙනගන්නවා. රැකියාවේදී අවශ්‍ය වචන සහ උපදෙස් තේරුම්ගැනීමට හැකි වන ලෙස ඉදිරියටත් ඉගෙනීම කරගෙන යනවා.
+
+19 — When instructions are unclear
+
+ID: agri-019
+
+Question Japanese: 仕事の指示が分からないとき、どうしますか。
+
+Question Sinhala pronunciation: ෂිගොතො නො ෂිජි ගා වකරානයි තොකි, දෝ ෂිමස් කා.
+
+Question Sinhala meaning: වැඩ උපදෙස් තේරෙන්නේ නැත්නම් මොකද කරන්නේ?
+
+Answer Japanese: 分からないまま作業をせず、もう一度説明してもらいます。正しく理解してから作業します。
+
+Answer Sinhala pronunciation: වකරානයි මමා සග්යෝ ඔ සෙසු, මෝ ඉචිදෝ සෙත්සුමෙයි ෂිතෙ මොරයිමස්. තදාෂිකු රිකයි ෂිතෙ කරා සග්යෝ ෂිමස්.
+
+Answer Sinhala meaning: නොතේරෙන තත්ත්වයේ වැඩ කරන්නේ නැහැ. නැවත පැහැදිලි කර දෙන ලෙස ඉල්ලා, නිවැරදිව තේරුම්ගෙන පසුව වැඩ කරනවා.
+
+20 — Mistakes at work
+
+ID: agri-020
+
+Question Japanese: 仕事で間違えたら、どうしますか。
+
+Question Sinhala pronunciation: ෂිගොතො දෙ මාචිගාඑතාරා, දෝ ෂිමස් කා.
+
+Question Sinhala meaning: වැඩේදී වරදක් වුණොත් මොකද කරන්නේ?
+
+Answer Japanese: すぐに責任者に報告し、指示を受けて修正します。同じ間違いを繰り返さないように気をつけます。
+
+Answer Sinhala pronunciation: සුගු නි සේකිනින්ෂා නි හෝකොකු ෂි, ෂිජි ඔ උකෙතෙ ෂූසෙයි ෂිමස්. ඔනාජි මාචිගායි ඔ කුරිකඑසනයි යෝනි කි ඔ ත්සුකෙමස්.
+
+Answer Sinhala meaning: වහාම වගකිවයුතු පුද්ගලයාට දැනුම් දී උපදෙස් ලබාගෙන නිවැරදි කරනවා. එම වරද නැවත නොවීමට සැලකිලිමත් වෙනවා.
+
+21 — Strengths
+
+ID: agri-021
+
+Question Japanese: あなたの長所は何ですか。
+
+Question Sinhala pronunciation: අනතා නො චෝෂෝ වා නානි දෙස් කා.
+
+Question Sinhala meaning: ඔබේ හොඳ ගුණාංග මොනවාද?
+
+Answer Japanese: 責任感があり、相手の話をよく聞くことができます。新しい仕事も真面目に学びます。
+
+Answer Sinhala pronunciation: සේකිනින්කන් ගා අරි, අයිතෙ නො හනාෂි ඔ යොකු කිකු කොතො ගා දෙකිමස්. අතාරාෂී ෂිගොතො මො මජිමෙ නි මනබිමස්.
+
+Answer Sinhala meaning: මට වගකීමෙන් වැඩ කිරීමේ ගුණයක් තිබෙනවා. අනෙක් අය කියන දේ හොඳින් අහනවා. අලුත් වැඩත් අවංකව ඉගෙනගන්නවා.
+
+22 — Weaknesses
+
+ID: agri-022
+
+Question Japanese: あなたの短所は何ですか。
+
+Question Sinhala pronunciation: අනතා නො තන්ෂෝ වා නානි දෙස් කා.
+
+Question Sinhala meaning: ඔබේ දුර්වලතාව මොකක්ද?
+
+Answer Japanese: 新しい仕事では確認に時間がかかることがありますが、メモを取り、正確にできるように努力しています。
+
+Answer Sinhala pronunciation: අතාරාෂී ෂිගොතො දෙවා කකුනින් නි ජිකන් ගා කකරු කොතො ගා අරිමස් ගා, මෙමො ඔ තෝරි, සේකාකු නි දෙකිරු යෝනි දෝර්යොකු ෂිතෙ ඉමස්.
+
+Answer Sinhala meaning: අලුත් වැඩවලදී තහවුරු කරගැනීමට ටිකක් කාලය ගතවිය හැකියි. නමුත් සටහන් තබාගෙන නිවැරදිව වැඩ කිරීමට උත්සාහ කරනවා.
+
+23 — Working in difficult weather
+
+ID: agri-023
+
+Question Japanese: 暑い日や寒い日でも働けますか。
+
+Question Sinhala pronunciation: අත්සුයි හි යා සමුයි හි දෙමො හතාරකෙමස් කා.
+
+Question Sinhala meaning: උණුසුම් හෝ සීතල දිනවලත් වැඩ කළ හැකිද?
+
+Answer Japanese: はい。天候に合わせて体調を管理し、安全に気をつけながら働きます。
+
+Answer Sinhala pronunciation: හයි. තෙන්කෝ නි අවවසෙතෙ තයිචෝ ඔ කන්රි ෂි, අන්සෙන් නි කි ඔ ත්සුකෙනගරා හතාරකිමස්.
+
+Answer Sinhala meaning: ඔව්. කාලගුණයට අනුව සෞඛ්‍යය කළමනාකරණය කරගෙන ආරක්ෂාව ගැන සැලකිලිමත් වෙමින් වැඩ කරනවා.
+
+24 — Working hours
+
+ID: agri-024
+
+Question Japanese: 決められた勤務時間を守れますか。
+
+Question Sinhala pronunciation: කිමෙරරෙතා කිංමු ජිකන් ඔ මාමොරෙමස් කා.
+
+Question Sinhala meaning: නියමිත සේවා වේලාවන් පිළිපදින්න පුළුවන්ද?
+
+Answer Japanese: はい。勤務時間と職場のルールを守り、時間に遅れないようにします。
+
+Answer Sinhala pronunciation: හයි. කිංමු ජිකන් තො ෂොකුබා නො රූරු ඔ මාමරි, ජිකන් නි ඔකුරෙනයි යෝනි ෂිමස්.
+
+Answer Sinhala meaning: ඔව්. සේවා වේලාවන් සහ සේවා ස්ථානයේ නීති පිළිපදිනවා. වෙලාවට පැමිණීමට සැලකිලිමත් වෙනවා.
+
+25 — Workplace rules
+
+ID: agri-025
+
+Question Japanese: 職場のルールについて、どう思いますか。
+
+Question Sinhala pronunciation: ෂොකුබා නො රූරු නි ත්සුයිතෙ, දෝ ඔමොයිමස් කා.
+
+Question Sinhala meaning: සේවා ස්ථානයේ නීති ගැන ඔබේ අදහස මොකක්ද?
+
+Answer Japanese: ルールは安全で円滑に仕事をするために大切だと思います。必ず守ります。
+
+Answer Sinhala pronunciation: රූරු වා අන්සෙන් දෙ එන්කාත්සු නි ෂිගොතො ඔ සුරු තමේ නි තයිසෙත්සු දා තො ඔමොයිමස්. කනරාසු මාමරිමස්.
+
+Answer Sinhala meaning: ආරක්ෂිතව සහ සුමටව වැඩ කිරීමට නීති වැදගත් කියලා මම හිතනවා. ඒවා අනිවාර්යයෙන්ම පිළිපදිනවා.
+
+26 — Living away from family
+
+ID: agri-026
+
+Question Japanese: 家族と離れて日本で生活できますか。
+
+Question Sinhala pronunciation: කාසොකු තො හනරෙතෙ නිහොන් දෙ සේයිකත්සු දෙකිමස් කා.
+
+Question Sinhala meaning: පවුලෙන් ඈත්ව ජපානයේ ජීවත් වෙන්න පුළුවන්ද?
+
+Answer Japanese: はい。家族とよく相談しており、日本での仕事と生活に責任を持って取り組みたいです。
+
+Answer Sinhala pronunciation: හයි. කාසොකු තො යොකු සෝදන් ෂිතෙ ඔරි, නිහොන් දෙ නො ෂිගොතො තො සේයිකත්සු නි සේකිනින් ඔ මොත්තෙ තොරිකුමි තයි දෙස්.
+
+Answer Sinhala meaning: ඔව්. මම පවුල සමඟ හොඳින් සාකච්ඡා කර තිබෙනවා. ජපානයේ රැකියාව සහ ජීවිතය වගකීමෙන් කරගෙන යාමට කැමතියි.
+
+27 — Family support
+
+ID: agri-027
+
+Question Japanese: 家族はあなたが日本で働くことに賛成していますか。
+
+Question Sinhala pronunciation: කාසොකු වා අනතා ගා නිහොන් දෙ හතාරකු කොතො නි සන්සේයි ෂිතෙ ඉමස් කා.
+
+Question Sinhala meaning: ඔබ ජපානයේ වැඩ කරනවාට පවුලේ අය කැමතිද?
+
+Answer Japanese: 家族とよく相談しています。日本で働く目的を理解してもらい、責任を持って頑張りたいです。
+
+Answer Sinhala pronunciation: කාසොකු තො යොකු සෝදන් ෂිතෙ ඉමස්. නිහොන් දෙ හතාරකු මොකුතෙකි ඔ රිකයි ෂිතෙ මොරයි, සේකිනින් ඔ මොත්තෙ ගන්බරි තයි දෙස්.
+
+Answer Sinhala meaning: මම පවුල සමඟ හොඳින් සාකච්ඡා කරනවා. ජපානයේ වැඩ කිරීමට ඇති මගේ අරමුණ ඔවුන්ට පැහැදිලි කරගෙන වගකීමෙන් උත්සාහ කරන්න කැමතියි.
+
+28 — Handling stress
+
+ID: agri-028
+
+Question Japanese: 仕事でストレスを感じたとき、どうしますか。
+
+Question Sinhala pronunciation: ෂිගොතො දෙ සුතොරෙසු ඔ කන්ජිතා තොකි, දෝ ෂිමස් කා.
+
+Question Sinhala meaning: වැඩේදී ආතතියක් දැනුණොත් මොකද කරන්නේ?
+
+Answer Japanese: 落ち着いて問題を整理します。必要なときは責任者に相談し、解決方法を考えます。
+
+Answer Sinhala pronunciation: ඔචිත්සුයිතෙ මොන්දායි ඔ සේයිරි ෂිමස්. හිත්සුයෝනා තොකි වා සේකිනින්ෂා නි සෝදන් ෂි, කයිකෙත්සු හෝහෝ ඔ කන්ගඑමස්.
+
+Answer Sinhala meaning: සන්සුන්ව ගැටලුව හඳුනාගෙන පිළිවෙළකට සකස් කරනවා. අවශ්‍ය විට වගකිවයුතු පුද්ගලයා සමඟ සාකච්ඡා කර විසඳුමක් සොයනවා.
+
+29 — Following instructions
+
+ID: agri-029
+
+Question Japanese: 上司の指示に従うことができますか。
+
+Question Sinhala pronunciation: ජෝෂි නො ෂිජි නි ෂිතගවු කොතො ගා දෙකිමස් කා.
+
+Question Sinhala meaning: ඔබට ප්‍රධානියාගේ උපදෙස් පිළිපදින්න පුළුවන්ද?
+
+Answer Japanese: はい。指示をよく聞き、分からない点を確認して、正しく作業します。
+
+Answer Sinhala pronunciation: හයි. ෂිජි ඔ යොකු කිකි, වකරානයි තෙන් ඔ කකුනින් ෂිතෙ, තදාෂිකු සග්යෝ ෂිමස්.
+
+Answer Sinhala meaning: ඔව්. උපදෙස් හොඳින් අසා, නොතේරෙන කරුණු තහවුරු කරගෙන නිවැරදිව වැඩ කරනවා.
+
+30 — Long-term goals
+
+ID: agri-030
+
+Question Japanese: 将来の目標は何ですか。
+
+Question Sinhala pronunciation: ෂෝරයි නො මොකුහ්යෝ වා නානි දෙස් කා.
+
+Question Sinhala meaning: ඔබේ අනාගත ඉලක්කය මොකක්ද?
+
+Answer Japanese: 日本で農業の知識と技術を学び、経験を積みたいです。仕事を通して成長し、将来に生かしたいです。
+
+Answer Sinhala pronunciation: නිහොන් දෙ නොග්යෝ නො චිෂිකි තො ගිජුත්සු ඔ මනබි, කෙයිකෙන් ඔ සුමි තයි දෙස්. ෂිගොතො ඔ තෝෂිතෙ සෙයිචෝ ෂි, ෂෝරයි නි ඉකෂිතයි දෙස්.
+
+Answer Sinhala meaning: ජපානයේ කෘෂිකාර්මික දැනුම සහ තාක්ෂණය ඉගෙනගෙන අත්දැකීම් ලබාගැනීමට කැමතියි. රැකියාව තුළින් දියුණු වී අනාගතයේදී ඒ දැනුම ප්‍රයෝජනයට ගන්නවා.
+
+31 — Why should we hire you?
+
+ID: agri-031
+
+Question Japanese: あなたを採用するメリットは何ですか。
+
+Question Sinhala pronunciation: අනතා ඔ සයියෝ සුරු මෙරිත්තො වා නානි දෙස් කා.
+
+Question Sinhala meaning: ඔබව සේවයට බඳවා ගැනීමේ වාසිය මොකක්ද?
+
+Answer Japanese: 責任感を持って働き、新しいことを学ぶ努力ができます。農業の経験を生かし、チームに貢献したいです。
+
+Answer Sinhala pronunciation: සේකිනින්කන් ඔ මොත්තෙ හතාරකි, අතාරාෂී කොතො ඔ මනබු දෝර්යොකු ගා දෙකිමස්. නොග්යෝ නො කෙයිකෙන් ඔ ඉකාෂි, චීමු නි කෝකෙන් ෂිතයි දෙස්.
+
+Answer Sinhala meaning: මට වගකීමෙන් වැඩ කර අලුත් දේවල් ඉගෙනගැනීමට උත්සාහ කළ හැකියි. මගේ කෘෂිකාර්මික අත්දැකීම් ප්‍රයෝජනයට ගෙන කණ්ඩායමට දායක වීමට කැමතියි.
+
+32 — If the work is difficult
+
+ID: agri-032
+
+Question Japanese: 仕事が大変なとき、どうしますか。
+
+Question Sinhala pronunciation: ෂිගොතො ගා තයිහෙන්නා තොකි, දෝ ෂිමස් කා.
+
+Question Sinhala meaning: වැඩ අමාරු වූ විට මොකද කරන්නේ?
+
+Answer Japanese: あきらめずに努力します。分からないことや難しいことがあれば、周りの人に相談します。
+
+Answer Sinhala pronunciation: අකිරමෙසු නි දෝර්යොකු ෂිමස්. වකරානයි කොතො යා මුසුකාෂී කොතො ගා අරෙබා, මවාරි නො හිත් නි සෝදන් ෂිමස්.
+
+Answer Sinhala meaning: අත් නොහැර උත්සාහ කරනවා. නොතේරෙන හෝ අමාරු දෙයක් තිබුණොත් අනෙක් අය සමඟ සාකච්ඡා කරනවා.
+
+33 — Agricultural machinery
+
+ID: agri-033
+
+Question Japanese: 農業の機械を使ったことがありますか。
+
+Question Sinhala pronunciation: නොග්යෝ නො කිකායි ඔ ත්සුකත්ත කොතො ගා අරිමස් කා.
+
+Question Sinhala meaning: කෘෂිකාර්මික යන්ත්‍ර භාවිත කර තිබෙනවාද?
+
+Answer Japanese: 使った経験について正直に説明します。初めて使う機械は、安全な使い方を学び、許可を得てから使います。
+
+Answer Sinhala pronunciation: ත්සුකත්ත කෙයිකෙන් නි ත්සුයිතෙ ෂෝජිකි නි සෙත්සුමෙයි ෂිමස්. හාජිමෙතෙ ත්සුකවු කිකායි වා, අන්සෙන්නා ත්සුකයිකතා ඔ මනබි, කියොකා ඔ එතෙ කරා ත්සුකයිමස්.
+
+Answer Sinhala meaning: යන්ත්‍ර භාවිතය පිළිබඳ මගේ සැබෑ අත්දැකීම අවංකව පැහැදිලි කරනවා. පළමු වරට යන්ත්‍රයක් භාවිත කරන විට ආරක්ෂිත භාවිතය ඉගෙනගෙන අවසර ලබාගත් පසුව භාවිත කරනවා.
+
+34 — What will you do if you disagree with a coworker?
+
+ID: agri-034
+
+Question Japanese: 同僚と意見が違うとき、どうしますか。
+
+Question Sinhala pronunciation: දෝරියෝ තො ඉකෙන් ගා චිගවු තොකි, දෝ ෂිමස් කා.
+
+Question Sinhala meaning: සේවකයෙකු සමඟ අදහස් වෙනස් වූ විට මොකද කරන්නේ?
+
+Answer Japanese: 相手の意見をよく聞き、落ち着いて話し合います。必要な場合は上司に相談します。
+
+Answer Sinhala pronunciation: අයිතෙ නො ඉකෙන් ඔ යොකු කිකි, ඔචිත්සුයිතෙ හනාෂිඅයිමස්. හිත්සුයෝනා බායි වා ජෝෂි නි සෝදන් ෂිමස්.
+
+Answer Sinhala meaning: අනෙක් පුද්ගලයාගේ අදහස හොඳින් අසා සන්සුන්ව සාකච්ඡා කරනවා. අවශ්‍ය නම් ප්‍රධානියාගෙන් උපදෙස් ගන්නවා.
+
+35 — Final message to the employer
+
+ID: agri-035
+
+Question Japanese: 最後に何か伝えたいことはありますか。
+
+Question Sinhala pronunciation: සයිගෝ නි නානි කා ත්සුතඑතයි කොතො වා අරිමස් කා.
+
+Question Sinhala meaning: අවසානයේ ඔබට කියන්න දෙයක් තිබෙනවාද?
+
+Answer Japanese: 面接の機会をいただき、ありがとうございます。日本の農業を学び、責任を持って一生懸命働きたいです。よろしくお願いいたします。
+
+Answer Sinhala pronunciation: මෙන්සෙත්සු නො කිකායි ඔ ඉතාදකි, අරිගතෝ ගොසයිමස්. නිහොන් නො නොග්යෝ ඔ මනබි, සේකිනින් ඔ මොත්තෙ ඉෂ්ෂෝකෙන්මෙයි හතාරකි තයි දෙස්. යොරොෂිකු ඔනෙගයි ඉතාෂිමස්.
+
+Answer Sinhala meaning: සම්මුඛ පරීක්ෂණ අවස්ථාව ලබා දීම ගැන ස්තුතියි. ජපානයේ කෘෂිකර්මය ඉගෙනගෙන වගකීමෙන් සහ මහන්සියෙන් වැඩ කිරීමට කැමතියි. ඔබ සමඟ හොඳින් කටයුතු කිරීමට බලාපොරොත්තු වෙනවා.
+
+PART C — DATA INTEGRITY
+
+The 35 records above are mandatory initial application data.
+
+Implement an automated data integrity test that verifies:
+
+* Exactly 35 unique stable IDs exist.
+* IDs run from agri-001 through agri-035.
+* Every record has a Japanese question.
+* Every record has Sinhala-script question pronunciation.
+* Every record has a Sinhala question meaning.
+* Every record has a Japanese answer.
+* Every record has Sinhala-script answer pronunciation.
+* Every record has a Sinhala answer meaning.
+* No answer field is accidentally assigned to a question.
+* No question audio plays answer text.
+* No answer audio plays question text.
+* No records are silently removed or duplicated.
+
+If the app supports additional AI-generated practice questions, store them separately from these 35 required records. Never overwrite the required data.
+
+PART D — FIX ALL SINHALA CHARACTER RENDERING ERRORS
+
+This is a mandatory engineering task, not a visual preference.
+
+Audit the complete app for Sinhala Unicode rendering errors and fix them.
+
+Unicode and source files
+
+* Save all source files as UTF-8.
+* Preserve Sinhala Unicode code points without destructive normalisation or character replacement.
+* Do not transliterate stored Sinhala text at runtime.
+* Do not convert Sinhala strings into broken legacy encodings.
+* Ensure JSON, TypeScript, HTML, and API responses preserve Unicode.
+* Use valid JSON encoding and avoid manual byte conversion.
+
+Fonts
+
+Use a reliable Sinhala-capable font, preferably Noto Sans Sinhala, bundled locally when licensing and project configuration permit.
+
+If using a web font:
+
+* Include the necessary Sinhala character subsets.
+* Verify that the correct font files actually load.
+* Configure a sensible fallback font stack.
+* Do not rely on an external font CDN for essential offline rendering.
+* Check font loading failures.
+
+Use a fallback stack similar to:
+
+"Noto Sans Sinhala", "Noto Sans", sans-serif
+
+Do not assume that naming a font in CSS means the font is actually installed or loaded.
+
+CSS and layout
+
+Inspect and fix:
+
+* Text clipped vertically.
+* Sinhala vowel signs cut off.
+* Overlapping lines.
+* Broken word wrapping.
+* Incorrect line height.
+* Fixed-height cards that cut off text.
+* Horizontal overflow.
+* Text hidden behind buttons.
+* Incorrect font-weight rendering.
+* Narrow text containers.
+* Incorrect flex and grid sizing.
+* Dark-mode contrast problems.
+
+Use suitable line height, flexible card heights, min-width: 0 where needed, and natural text wrapping.
+
+Avoid fixed heights for Sinhala text containers unless the content is safely scrollable.
+
+Ensure that Sinhala text can wrap naturally and remains fully visible at 320px, 375px, 390px, 430px, tablet, and desktop widths.
+
+React rendering
+
+* Render text through normal React text nodes.
+* Do not inject Sinhala text as raw HTML.
+* Avoid splitting Unicode grapheme sequences across independently styled fragments.
+* Preserve strings when loading, saving, and restoring data.
+* Check that React keys are stable and unique.
+* Do not use broken custom Sinhala fonts or manually constructed Sinhala glyph combinations.
+
+iPhone Safari and Android
+
+Test and correct:
+
+* Sinhala rendering on iOS Safari.
+* Sinhala rendering on Android Chrome.
+* Font fallback.
+* Text selection and copy/paste.
+* Browser zoom.
+* Dark mode.
+* Long answers and multiline pronunciation.
+* Screen rotation and narrow viewports.
+
+If a real device is unavailable, run automated browser or rendering checks that are available and clearly mark real-device testing as pending.
+
+Required Unicode regression tests
+
+Create automated tests that render and inspect the actual supplied Sinhala strings, including:
+
+* කරුණාකර ඔබ ගැන හඳුන්වා දෙන්න.
+* මම මූල්‍ය සමාගමක සේවය කරනවා.
+* පවුලේ කෘෂිකාර්මික කටයුතුවලට උදව් කළ අත්දැකීම් තිබෙනවා.
+* ජපන් භාෂාව ඉගෙනගන්නවා.
+
+Verify that:
+
+1. Strings survive JSON serialization and deserialization.
+2. Strings survive local persistence.
+3. Strings appear correctly in the question and answer components.
+4. Text is not clipped or hidden.
+5. No replacement characters such as � are introduced.
+6. The UI does not accidentally show escaped Unicode sequences instead of readable Sinhala.
+7. The UI does not produce mojibake or empty glyph boxes.
+
+Do not claim that screenshots or code inspection alone prove correct rendering on every real device.
+
+PART E — JAPANESE TTS AND AUDIO
+
+Implement a working voice service with two engines.
+
+Native voice
+
+* Use browser speechSynthesis where supported.
+* Request a Japanese ja-JP voice.
+* Detect available voices.
+* Wait for asynchronous voice-list loading where needed.
+* Allow the user to select an available voice.
+* Provide play, stop, replay, and adjustable speed.
+* Handle iOS user-gesture restrictions and browser limitations.
+* Never assume the device has a Japanese voice installed.
+
+Gemini TTS
+
+Use the current officially supported Google Gemini TTS model and current SDK/API method. Verify the model identifier against the official documentation before implementation.
+
+Use a secure server-side endpoint and server-side secret for GEMINI_API_KEY. Never expose the key in frontend source or client storage.
+
+Support:
+
+* Japanese source-text synthesis.
+* Audio response decoding.
+* Playback and error handling.
+* Request cancellation where possible.
+* Quota and rate-limit errors.
+* Network failures.
+* Automatic native TTS fallback.
+
+Cache generated audio where appropriate and permitted.
+
+Do not generate audio from Sinhala pronunciation. Generate Japanese audio from the Japanese source field.
+
+The question and answer must have distinct audio actions and stable cache keys.
+
+Basic native TTS must not require a paid service. Do not promise unlimited free Gemini TTS.
+
+PART F — COMPLETE APP FEATURES
+
+Implement these screens:
+
+1. Dashboard.
+2. Interview practice.
+3. Interview simulation.
+4. All 35 question cards.
+5. All 35 answer cards.
+6. Agriculture category library.
+7. CV-based question practice.
+8. Japanese voice laboratory.
+9. Microphone speaking practice.
+10. Favourites.
+11. Revision queue.
+12. Progress statistics.
+13. Settings.
+14. Optional Japanese-script learning mode.
+15. Offline content view.
+
+The CV profile must be editable. Never invent the candidate’s exact age, family details, qualifications, employment dates beyond supplied facts, agricultural achievements, or official test results.
+
+Use the 35 embedded records immediately. Do not require AI generation before they appear.
+
+Use local storage or IndexedDB for progress and settings.
+
+Implement a real PWA manifest and service worker. Make cached content available offline, while correctly identifying cloud TTS and AI features that need connectivity.
+
+PART G — INTERVIEW EXPERIENCE
+
+For every question:
+
+* Show the Sinhala-script question pronunciation.
+* Show the Sinhala meaning.
+* Play the original Japanese question.
+* Provide a button to reveal the model answer.
+* Show the answer’s Sinhala-script pronunciation and Sinhala meaning.
+* Play the Japanese model answer.
+* Allow retry and next question.
+* Allow favourites and completion tracking.
+
+Provide guided practice and simulation modes.
+
+In simulation mode, hide the model answer until the learner responds or asks to reveal it.
+
+Microphone practice must have:
+
+* Start.
+* Stop.
+* Retry.
+* Text-input fallback.
+* Permission-denied handling.
+* Unsupported-browser handling.
+* Recognition-error handling.
+
+Where supported, use a five-second timeout waiting for speech and approximately four seconds of silence to detect the end of speech. Do not claim that every browser supports these exact timing rules.
+
+Do not claim validated pronunciation scoring unless a real scoring engine is implemented and tested.
+
+PART H — BUILD, TEST, AND FINAL DELIVERABLES
+
+Build the complete application in the first implementation. Do not return only a plan.
+
+Before declaring completion:
+
+* Run the production build.
+* Run available tests.
+* Fix compilation and runtime errors.
+* Verify all 35 question-answer records.
+* Verify all question and answer buttons.
+* Verify Sinhala Unicode regression tests.
+* Verify native TTS fallback.
+* Verify the configured Gemini TTS integration.
+* Verify local progress persistence.
+* Verify mobile layout and horizontal overflow.
+* Verify PWA assets and offline fallback.
+* Verify API key security.
+* Inspect browser console errors where tooling permits.
+
+Deliver:
+
+1. Complete source code.
+2. All 35 required embedded interview questions and answers.
+3. All screens and core functionality.
+4. Fixed Sinhala Unicode rendering.
+5. Secure TTS integration and fallback.
+6. Complete README and setup instructions.
+7. Environment-variable example without secrets.
+8. Build and test report.
+9. GitHub and deployment instructions.
+10. Complete downloadable ZIP if supported by the environment.
+
+Do not claim a test passed unless it actually ran. Separate automated checks from tests requiring real iPhone or Android hardware.
+
+Do not finish with another prompt asking the user to add the missing data. Implement the entire application and all 35 records in this task.
+
+START IMPLEMENTATION NOW. THE FINAL APPLICATION, DATA, SINHALA RENDERING FIXES, AND AVAILABLE TESTS ARE THE REQUIRED DELIVERABLES.

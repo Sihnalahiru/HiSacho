@@ -1,0 +1,6 @@
+{
+  "name": "Japanese SSW Agriculture Interview Coach",
+  "description": "Complete Japanese Specified Skilled Worker (SSW) Agriculture interview prep for Sri Lankan candidates with 35 curated Q&As, authentic Japanese TTS, Sinhala pronunciation & meaning, mock simulation, and voice lab.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
