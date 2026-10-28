@@ -39,24 +39,32 @@ const STORAGE_KEYS = {
 };
 
 class StorageService {
+  private fallbackStore = new Map<string, string>();
+
   private getItem<T>(key: string, defaultValue: T): T {
     if (typeof window === 'undefined') return defaultValue;
     try {
       const item = localStorage.getItem(key);
-      if (!item) return defaultValue;
+      if (!item) {
+        const memoryItem = this.fallbackStore.get(key);
+        return memoryItem ? (JSON.parse(memoryItem) as T) : defaultValue;
+      }
       return JSON.parse(item) as T;
     } catch (e) {
-      console.warn(`Storage reading failed for key "${key}":`, e);
-      return defaultValue;
+      console.warn(`Storage reading guarded for key "${key}":`, e);
+      const memoryItem = this.fallbackStore.get(key);
+      return memoryItem ? (JSON.parse(memoryItem) as T) : defaultValue;
     }
   }
 
   private setItem<T>(key: string, value: T): void {
     if (typeof window === 'undefined') return;
+    const json = JSON.stringify(value);
+    this.fallbackStore.set(key, json);
     try {
-      localStorage.setItem(key, JSON.stringify(value));
+      localStorage.setItem(key, json);
     } catch (e) {
-      console.warn(`Storage saving failed for key "${key}":`, e);
+      console.warn(`Storage saving guarded for key "${key}":`, e);
     }
   }
 
@@ -144,11 +152,16 @@ class StorageService {
   }
 
   public resetAllProgress(): void {
+    this.fallbackStore.clear();
     if (typeof window === 'undefined') return;
-    localStorage.removeItem(STORAGE_KEYS.FAVORITES);
-    localStorage.removeItem(STORAGE_KEYS.COMPLETED);
-    localStorage.removeItem(STORAGE_KEYS.REVISION);
-    localStorage.removeItem(STORAGE_KEYS.ATTEMPTS);
+    try {
+      localStorage.removeItem(STORAGE_KEYS.FAVORITES);
+      localStorage.removeItem(STORAGE_KEYS.COMPLETED);
+      localStorage.removeItem(STORAGE_KEYS.REVISION);
+      localStorage.removeItem(STORAGE_KEYS.ATTEMPTS);
+    } catch (e) {
+      console.warn('Storage reset guarded:', e);
+    }
   }
 }
 

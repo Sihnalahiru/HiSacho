@@ -74,6 +74,7 @@ export const VoiceLabView: React.FC<VoiceLabViewProps> = ({ settings, onUpdateSe
   }, []);
 
   const handlePlay = async (text: string) => {
+    audioService.prepareForPlayback();
     if (isPlaying || isLoading) {
       audioService.stop();
       setIsPlaying(false);

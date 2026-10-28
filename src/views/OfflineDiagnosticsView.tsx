@@ -23,15 +23,21 @@ export const OfflineDiagnosticsView: React.FC = () => {
 
   useEffect(() => {
     runSuite();
-    // Check service worker
+    // Check service worker safely
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(regs => {
-        if (regs.length > 0) {
-          setSwStatus(`සක්‍රියයි (${regs.length} Service Worker ලියාපදිංචි කර ඇත)`);
-        } else {
-          setSwStatus('ලියාපදිංචි වෙමින් පවතී / Dev මාදිලිය');
-        }
-      });
+      try {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+          if (regs && regs.length > 0) {
+            setSwStatus(`සක්‍රියයි (${regs.length} Service Worker ලියාපදිංචි කර ඇත)`);
+          } else {
+            setSwStatus('ලියාපදිංචි වෙමින් පවතී / Dev මාදිලිය');
+          }
+        }).catch(err => {
+          setSwStatus('නොබැඳි හැඹිලිය සක්‍රියයි (Cache Storage)');
+        });
+      } catch (e) {
+        setSwStatus('නොබැඳි හැඹිලිය සක්‍රියයි (Cache Storage)');
+      }
     } else {
       setSwStatus('මෙම බ්‍රවුසරයේ Service Worker සහාය නොදක්වයි');
     }

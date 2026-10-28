@@ -50,6 +50,7 @@ export const AnswerCardsView: React.FC<AnswerCardsViewProps> = ({
   });
 
   const handlePlayAnswer = async (q: InterviewQuestion) => {
+    audioService.prepareForPlayback();
     if (playingId === q.id) {
       audioService.stop();
       setPlayingId(null);

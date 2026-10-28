@@ -23,13 +23,64 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
 
+    <!-- Safe Service Worker cleanup & Error Trap for iOS Safari/Chrome WebKit -->
+    <script>
+      (function() {
+        // Guard against stale service workers intercepting requests on iOS
+        if ('serviceWorker' in navigator) {
+          try {
+            navigator.serviceWorker.getRegistrations().then(function(regs) {
+              for (var i = 0; i < regs.length; i++) {
+                // If in dev or iframe or broken state, unregister stale workers
+                try {
+                  var isIframe = false;
+                  try { isIframe = window.self !== window.top; } catch(e) { isIframe = true; }
+                  if (isIframe || window.location.hostname === 'localhost' || window.location.port === '3000') {
+                    regs[i].unregister().catch(function() {});
+                  }
+                } catch(e) {}
+              }
+            }).catch(function() {});
+          } catch(e) {}
+        }
+
+        // Global uncaught error trap to eliminate blank white screen
+        window.addEventListener('error', function(event) {
+          console.error('[Global Error Trap]:', event.error || event.message);
+          var root = document.getElementById('root');
+          if (root && (!root.children || root.children.length === 0 || root.querySelector('.initial-loader'))) {
+            root.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0f172a;color:#f8fafc;font-family:sans-serif;padding:24px;text-align:center;">' +
+              '<div style="max-width:400px;background:#1e293b;border-radius:24px;padding:24px;box-shadow:0 10px 25px rgba(0,0,0,0.5);border:1px solid #334155;">' +
+                '<div style="font-size:36px;margin-bottom:12px;">🌾</div>' +
+                '<h2 style="font-size:16px;font-weight:bold;margin:0 0 8px 0;color:#34d399;">SSW ජපන් කෘෂිකර්ම පුහුණුව</h2>' +
+                '<p style="font-size:12px;color:#cbd5e1;margin:0 0 16px 0;line-height:1.6;">යෙදුම පූරණය වීමේදී දෝෂයක් හටගැනිණි. කරුණාකර නැවත පූරණය කරන්න.</p>' +
+                '<button onclick="window.location.reload()" style="background:#059669;color:#fff;border:none;border-radius:12px;padding:10px 20px;font-size:12px;font-weight:bold;cursor:pointer;">නැවත පූරණය කරන්න (Reload)</button>' +
+              '</div></div>';
+          }
+        });
+      })();
+    </script>
+
     <!-- Google Fonts for Sinhala & Japanese -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body class="h-full bg-slate-50 text-slate-900 antialiased selection:bg-emerald-500 selection:text-white dark:bg-slate-950 dark:text-slate-100">
-    <div id="root" class="h-full"></div>
+    <div id="root" class="h-full">
+      <!-- Initial Loading Skeleton (prevents blank white screen during module loading) -->
+      <div class="initial-loader min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
+        <div class="w-16 h-16 rounded-3xl bg-emerald-700 text-white flex items-center justify-center text-3xl shadow-lg mb-4 animate-bounce">
+          🌾
+        </div>
+        <h1 class="text-lg font-bold text-slate-800 dark:text-slate-100 font-sinhala mb-1">
+          SSW ජපන් කෘෂිකර්ම සම්මුඛ පරීක්ෂණ පුහුණුව
+        </h1>
+        <p class="text-xs text-slate-500 dark:text-slate-400 font-sinhala">
+          පූරණය වෙමින් පවතී (Loading 35 Q&As)...
+        </p>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

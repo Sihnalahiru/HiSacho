@@ -101,6 +101,7 @@ export const SimulationView: React.FC<SimulationViewProps> = ({ settings, onFini
 
   const handlePlayQuestionVoice = async () => {
     if (!currentQ) return;
+    audioService.prepareForPlayback();
     if (isPlayingQuestion) {
       audioService.stop();
       setIsPlayingQuestion(false);
@@ -121,6 +122,7 @@ export const SimulationView: React.FC<SimulationViewProps> = ({ settings, onFini
 
   const handlePlayAnswerVoice = async () => {
     if (!currentQ) return;
+    audioService.prepareForPlayback();
     if (isPlayingAnswer) {
       audioService.stop();
       setIsPlayingAnswer(false);

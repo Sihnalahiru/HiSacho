@@ -46,7 +46,30 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Gemini TTS Endpoint
+// Create standard 44-byte RIFF WAV header for 16-bit linear PCM
+function createWavHeader(dataLength: number, sampleRate = 24000, numChannels = 1, bitsPerSample = 16): Buffer {
+  const byteRate = sampleRate * numChannels * (bitsPerSample / 8);
+  const blockAlign = numChannels * (bitsPerSample / 8);
+  const buffer = Buffer.alloc(44);
+
+  buffer.write('RIFF', 0); // ChunkID
+  buffer.writeUInt32LE(36 + dataLength, 4); // ChunkSize
+  buffer.write('WAVE', 8); // Format
+  buffer.write('fmt ', 12); // Subchunk1ID
+  buffer.writeUInt32LE(16, 16); // Subchunk1Size (16 for PCM)
+  buffer.writeUInt16LE(1, 20); // AudioFormat (1 for PCM)
+  buffer.writeUInt16LE(numChannels, 22); // NumChannels
+  buffer.writeUInt32LE(sampleRate, 24); // SampleRate
+  buffer.writeUInt32LE(byteRate, 28); // ByteRate
+  buffer.writeUInt16LE(blockAlign, 32); // BlockAlign
+  buffer.writeUInt16LE(bitsPerSample, 34); // BitsPerSample
+  buffer.write('data', 36); // Subchunk2ID
+  buffer.writeUInt32LE(dataLength, 40); // Subchunk2Size
+
+  return buffer;
+}
+
+// Gemini TTS Endpoint with guaranteed WAV encapsulation
 app.post('/api/tts', async (req, res) => {
   const { text, voiceName = 'Kore' } = req.body;
 
@@ -54,8 +77,9 @@ app.post('/api/tts', async (req, res) => {
     return res.status(400).json({ error: 'Text parameter is required' });
   }
 
-  // Check cache
-  const cacheKey = `${voiceName}:${text.trim()}`;
+  const trimmedText = text.trim();
+  // Check in-memory cache
+  const cacheKey = `${voiceName}:${trimmedText}`;
   if (ttsCache.has(cacheKey)) {
     return res.json({
       audioData: ttsCache.get(cacheKey),
@@ -80,7 +104,7 @@ app.post('/api/tts', async (req, res) => {
           role: 'user',
           parts: [
             {
-              text: text.trim(),
+              text: trimmedText,
               speechMetadata: {
                 style: 'Clear, polite Japanese interview tone',
               },
@@ -92,28 +116,38 @@ app.post('/api/tts', async (req, res) => {
         responseModalities: ['AUDIO'],
         speechConfig: {
           voiceConfig: {
-            // Supported prebuilt voices: 'Kore', 'Puck', 'Charon', 'Fenrir', 'Zephyr'
             prebuiltVoiceConfig: { voiceName: voiceName || 'Kore' },
           },
         },
       },
     });
 
-    const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+    const rawBase64 = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
 
-    if (!base64Audio) {
+    if (!rawBase64) {
       throw new Error('No audio data received from Gemini TTS');
     }
 
-    // Cache the result (max 200 items in memory)
-    if (ttsCache.size > 200) {
+    const rawBuffer = Buffer.from(rawBase64, 'base64');
+    let finalBase64 = rawBase64;
+
+    // Check if RIFF header is already present
+    const isWav = rawBuffer.length > 12 && rawBuffer.toString('ascii', 0, 4) === 'RIFF' && rawBuffer.toString('ascii', 8, 12) === 'WAVE';
+    if (!isWav) {
+      // Prepend 44-byte WAV header
+      const header = createWavHeader(rawBuffer.length, 24000, 1, 16);
+      finalBase64 = Buffer.concat([header, rawBuffer]).toString('base64');
+    }
+
+    // Cache the result (max 250 items in memory)
+    if (ttsCache.size > 250) {
       const firstKey = ttsCache.keys().next().value;
       if (firstKey) ttsCache.delete(firstKey);
     }
-    ttsCache.set(cacheKey, base64Audio);
+    ttsCache.set(cacheKey, finalBase64);
 
     return res.json({
-      audioData: base64Audio,
+      audioData: finalBase64,
       mimeType: 'audio/wav',
       cached: false,
     });

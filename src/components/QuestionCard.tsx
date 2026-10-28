@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InterviewQuestion } from '../data/interviewData.ts';
 import { audioService } from '../services/audioService.ts';
 import { UserSettings } from '../services/storageService.ts';
@@ -57,6 +57,12 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   const [isLoadingAnswer, setIsLoadingAnswer] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
 
+  // Silently preload audio in background so click-to-play is instantaneous and gesture-valid
+  useEffect(() => {
+    audioService.preloadAudio(question.questionJapanese, settings.ttsVoice);
+    audioService.preloadAudio(question.answerJapanese, settings.ttsVoice);
+  }, [question.id, settings.ttsVoice]);
+
   // Sinhala font size mapping
   const fontSizeClass = {
     normal: 'text-base sm:text-lg',
@@ -71,6 +77,9 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   }[settings.sinhalaFontSize] || 'text-base sm:text-lg font-semibold';
 
   const handlePlayQuestion = async () => {
+    // Immediately unlock audio context synchronously inside the click gesture
+    audioService.prepareForPlayback();
+
     if (isPlayingQuestion || isLoadingQuestion) {
       audioService.stop();
       setIsPlayingQuestion(false);
@@ -102,6 +111,9 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   };
 
   const handlePlayAnswer = async () => {
+    // Immediately unlock audio context synchronously inside the click gesture
+    audioService.prepareForPlayback();
+
     if (isPlayingAnswer || isLoadingAnswer) {
       audioService.stop();
       setIsPlayingAnswer(false);

@@ -48,6 +48,7 @@ export const MicrophonePracticeView: React.FC<MicrophonePracticeViewProps> = ({
   } = useSpeechRecognition('ja-JP');
 
   const handlePlayQuestion = async () => {
+    audioService.prepareForPlayback();
     if (isPlayingQuestion) {
       audioService.stop();
       setIsPlayingQuestion(false);
@@ -67,6 +68,7 @@ export const MicrophonePracticeView: React.FC<MicrophonePracticeViewProps> = ({
   };
 
   const handlePlayAnswer = async () => {
+    audioService.prepareForPlayback();
     if (isPlayingAnswer) {
       audioService.stop();
       setIsPlayingAnswer(false);
