@@ -10,7 +10,9 @@ import {
   Sliders,
   CheckCircle2,
   AlertTriangle,
-  Play
+  Play,
+  Loader2,
+  Info
 } from 'lucide-react';
 
 interface VoiceLabViewProps {
@@ -53,6 +55,7 @@ const PRESET_PHRASES = [
 
 export const VoiceLabView: React.FC<VoiceLabViewProps> = ({ settings, onUpdateSettings }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [playingText, setPlayingText] = useState<string | null>(null);
   const [customText, setCustomText] = useState('はじめまして。ラヒル・マドゥサンカと申します。');
   const [nativeVoices, setNativeVoices] = useState<SpeechSynthesisVoice[]>([]);
@@ -71,25 +74,32 @@ export const VoiceLabView: React.FC<VoiceLabViewProps> = ({ settings, onUpdateSe
   }, []);
 
   const handlePlay = async (text: string) => {
-    if (isPlaying) {
+    if (isPlaying || isLoading) {
       audioService.stop();
       setIsPlaying(false);
+      setIsLoading(false);
       setPlayingText(null);
       return;
     }
 
-    setIsPlaying(true);
+    setIsLoading(true);
     setPlayingText(text);
 
     await audioService.playJapanese(text, {
       engine: settings.ttsEngine,
       voiceName: settings.ttsVoice,
       rate: settings.ttsSpeed,
+      onStart: () => {
+        setIsLoading(false);
+        setIsPlaying(true);
+      },
       onEnd: () => {
+        setIsLoading(false);
         setIsPlaying(false);
         setPlayingText(null);
       },
       onError: () => {
+        setIsLoading(false);
         setIsPlaying(false);
         setPlayingText(null);
       },
@@ -215,8 +225,8 @@ export const VoiceLabView: React.FC<VoiceLabViewProps> = ({ settings, onUpdateSe
               className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white"
             >
               {nativeVoices.length > 0 ? (
-                nativeVoices.map(v => (
-                  <option key={v.name} value={v.name}>
+                nativeVoices.map((v, idx) => (
+                  <option key={`native-voice-${v.voiceURI || v.name}-${idx}`} value={v.name}>
                     {v.name} ({v.lang})
                   </option>
                 ))
@@ -224,6 +234,14 @@ export const VoiceLabView: React.FC<VoiceLabViewProps> = ({ settings, onUpdateSe
                 <option value="">පෙරනිමි ජපන් හඬ (Default ja-JP Voice)</option>
               )}
             </select>
+          )}
+          {settings.ttsEngine === 'native' && nativeVoices.length === 0 && (
+            <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-xs text-amber-900 dark:text-amber-200 font-sinhala leading-relaxed flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+              <span>
+                මෙම උපාංගයේ (Device) ජපන් Native Voice ස්ථාපනය කර නොමැත. යෙදුම ස්වයංක්‍රීයව Google Gemini Cloud TTS මඟින් ස්වභාවික ජපන් හඬ ශ්‍රවණය ලබා දෙනු ඇත.
+              </span>
+            </div>
           )}
         </div>
 
@@ -295,6 +313,8 @@ export const VoiceLabView: React.FC<VoiceLabViewProps> = ({ settings, onUpdateSe
             className={`w-full py-3 rounded-2xl text-xs font-bold text-white transition flex items-center justify-center gap-2 ${
               isPlaying && playingText === customText
                 ? 'bg-rose-600 animate-pulse'
+                : isLoading && playingText === customText
+                ? 'bg-purple-700 opacity-90 cursor-wait'
                 : 'bg-emerald-600 hover:bg-emerald-700'
             }`}
           >
@@ -302,6 +322,11 @@ export const VoiceLabView: React.FC<VoiceLabViewProps> = ({ settings, onUpdateSe
               <>
                 <Square className="w-3.5 h-3.5 fill-current" />
                 <span>නවතන්න (Stop Audio)</span>
+              </>
+            ) : isLoading && playingText === customText ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <span>හඬ සූදානම් වෙමින්...</span>
               </>
             ) : (
               <>
@@ -342,12 +367,16 @@ export const VoiceLabView: React.FC<VoiceLabViewProps> = ({ settings, onUpdateSe
                 className={`p-3 rounded-xl transition shrink-0 ${
                   isPlaying && playingText === item.japanese
                     ? 'bg-rose-600 text-white animate-pulse'
+                    : isLoading && playingText === item.japanese
+                    ? 'bg-purple-600 text-white'
                     : 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 hover:bg-emerald-100'
                 }`}
                 title="ශ්‍රවණය කරන්න"
               >
                 {isPlaying && playingText === item.japanese ? (
                   <Square className="w-4 h-4 fill-current" />
+                ) : isLoading && playingText === item.japanese ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
                   <Volume2 className="w-4 h-4" />
                 )}

@@ -13,7 +13,8 @@ import {
   Sparkles,
   Layers,
   ChevronRight,
-  Info
+  Info,
+  Loader2
 } from 'lucide-react';
 
 interface QuestionCardProps {
@@ -51,7 +52,9 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 }) => {
   const [answerRevealed, setAnswerRevealed] = useState(defaultAnswerRevealed);
   const [isPlayingQuestion, setIsPlayingQuestion] = useState(false);
+  const [isLoadingQuestion, setIsLoadingQuestion] = useState(false);
   const [isPlayingAnswer, setIsPlayingAnswer] = useState(false);
+  const [isLoadingAnswer, setIsLoadingAnswer] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
 
   // Sinhala font size mapping
@@ -68,40 +71,64 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   }[settings.sinhalaFontSize] || 'text-base sm:text-lg font-semibold';
 
   const handlePlayQuestion = async () => {
-    if (isPlayingQuestion) {
+    if (isPlayingQuestion || isLoadingQuestion) {
       audioService.stop();
       setIsPlayingQuestion(false);
+      setIsLoadingQuestion(false);
       return;
     }
     audioService.stop();
     setIsPlayingAnswer(false);
-    setIsPlayingQuestion(true);
+    setIsLoadingAnswer(false);
+    setIsLoadingQuestion(true);
 
     await audioService.playJapanese(question.questionJapanese, {
       engine: settings.ttsEngine,
       voiceName: settings.ttsVoice,
       rate: settings.ttsSpeed,
-      onEnd: () => setIsPlayingQuestion(false),
-      onError: () => setIsPlayingQuestion(false),
+      onStart: () => {
+        setIsLoadingQuestion(false);
+        setIsPlayingQuestion(true);
+      },
+      onEnd: () => {
+        setIsLoadingQuestion(false);
+        setIsPlayingQuestion(false);
+      },
+      onError: () => {
+        setIsLoadingQuestion(false);
+        setIsPlayingQuestion(false);
+      },
     });
   };
 
   const handlePlayAnswer = async () => {
-    if (isPlayingAnswer) {
+    if (isPlayingAnswer || isLoadingAnswer) {
       audioService.stop();
       setIsPlayingAnswer(false);
+      setIsLoadingAnswer(false);
       return;
     }
     audioService.stop();
     setIsPlayingQuestion(false);
-    setIsPlayingAnswer(true);
+    setIsLoadingQuestion(false);
+    setIsLoadingAnswer(true);
 
     await audioService.playJapanese(question.answerJapanese, {
       engine: settings.ttsEngine,
       voiceName: settings.ttsVoice,
       rate: settings.ttsSpeed,
-      onEnd: () => setIsPlayingAnswer(false),
-      onError: () => setIsPlayingAnswer(false),
+      onStart: () => {
+        setIsLoadingAnswer(false);
+        setIsPlayingAnswer(true);
+      },
+      onEnd: () => {
+        setIsLoadingAnswer(false);
+        setIsPlayingAnswer(false);
+      },
+      onError: () => {
+        setIsLoadingAnswer(false);
+        setIsPlayingAnswer(false);
+      },
     });
   };
 
@@ -206,6 +233,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
                 isPlayingQuestion
                   ? 'bg-rose-600 text-white animate-pulse'
+                  : isLoadingQuestion
+                  ? 'bg-emerald-700 text-white opacity-90 cursor-wait'
                   : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs active:scale-95'
               }`}
               title="ජපන් හඬින් ප්‍රශ්නය අසන්න"
@@ -214,6 +243,11 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 <>
                   <Square className="w-3.5 h-3.5 fill-current" />
                   <span>නවත්වන්න</span>
+                </>
+              ) : isLoadingQuestion ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <span>සූදානම් වෙමින්...</span>
                 </>
               ) : (
                 <>
@@ -276,6 +310,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
                       isPlayingAnswer
                         ? 'bg-rose-600 text-white animate-pulse'
+                        : isLoadingAnswer
+                        ? 'bg-blue-750 text-white opacity-90 cursor-wait'
                         : 'bg-blue-600 hover:bg-blue-700 text-white shadow-xs active:scale-95'
                     }`}
                     title="ජපන් හඬින් පිළිතුර අසන්න"
@@ -284,6 +320,11 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                       <>
                         <Square className="w-3.5 h-3.5 fill-current" />
                         <span>නවත්වන්න</span>
+                      </>
+                    ) : isLoadingAnswer ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>සූදානම් වෙමින්...</span>
                       </>
                     ) : (
                       <>

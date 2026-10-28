@@ -35,13 +35,18 @@ export function useSpeechRecognition(targetLanguage: string = 'ja-JP'): SpeechRe
     const SpeechRecognitionClass = win.SpeechRecognition || win.webkitSpeechRecognition;
 
     if (SpeechRecognitionClass) {
-      setIsSupported(true);
-      const rec = new SpeechRecognitionClass();
-      rec.continuous = true;
-      rec.interimResults = true;
-      rec.lang = targetLanguage;
+      try {
+        const rec = new SpeechRecognitionClass();
+        rec.continuous = true;
+        rec.interimResults = true;
+        rec.lang = targetLanguage;
 
-      recognitionRef.current = rec;
+        recognitionRef.current = rec;
+        setIsSupported(true);
+      } catch (err) {
+        console.warn('SpeechRecognition unavailable in this context (permissions policy or sandbox):', err);
+        setIsSupported(false);
+      }
     } else {
       setIsSupported(false);
     }

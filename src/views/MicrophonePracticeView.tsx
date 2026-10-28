@@ -48,22 +48,38 @@ export const MicrophonePracticeView: React.FC<MicrophonePracticeViewProps> = ({
   } = useSpeechRecognition('ja-JP');
 
   const handlePlayQuestion = async () => {
+    if (isPlayingQuestion) {
+      audioService.stop();
+      setIsPlayingQuestion(false);
+      return;
+    }
+    audioService.stop();
+    setIsPlayingAnswer(false);
     setIsPlayingQuestion(true);
     await audioService.playJapanese(activeQuestion.questionJapanese, {
       engine: settings.ttsEngine,
       voiceName: settings.ttsVoice,
       rate: settings.ttsSpeed,
+      onStart: () => setIsPlayingQuestion(true),
       onEnd: () => setIsPlayingQuestion(false),
       onError: () => setIsPlayingQuestion(false),
     });
   };
 
   const handlePlayAnswer = async () => {
+    if (isPlayingAnswer) {
+      audioService.stop();
+      setIsPlayingAnswer(false);
+      return;
+    }
+    audioService.stop();
+    setIsPlayingQuestion(false);
     setIsPlayingAnswer(true);
     await audioService.playJapanese(activeQuestion.answerJapanese, {
       engine: settings.ttsEngine,
       voiceName: settings.ttsVoice,
       rate: settings.ttsSpeed,
+      onStart: () => setIsPlayingAnswer(true),
       onEnd: () => setIsPlayingAnswer(false),
       onError: () => setIsPlayingAnswer(false),
     });

@@ -10,7 +10,10 @@ import {
   Trash2,
   Shield,
   Smartphone,
-  Info
+  Info,
+  Cpu,
+  Sparkles,
+  Sliders
 } from 'lucide-react';
 
 interface SettingsViewProps {
@@ -73,6 +76,96 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <span>ජපන් අක්ෂර දර්ශනය සක්‍රියයි. සියලු ප්‍රශ්න හා පිළිතුරු කාඩ්පත්වල මුල් ජපන් පෙළ ද දිස්වනු ඇත.</span>
           </div>
         )}
+      </div>
+
+      {/* Voice & Audio Engine (Gemini Cloud TTS vs Native) */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xs space-y-4">
+        <div className="space-y-1">
+          <span className="text-xs font-bold uppercase tracking-wider text-purple-700 dark:text-purple-400 flex items-center gap-1.5">
+            <Volume2 className="w-4 h-4" />
+            <span>ජපන් කටහඬ එන්ජිම (Speech Synthesis Engine)</span>
+          </span>
+          <h2 className="text-base font-bold text-slate-900 dark:text-white font-sinhala">
+            කටහඬ ක්‍රමය තෝරන්න (Select Voice Engine)
+          </h2>
+          <p className="text-xs text-slate-500 font-sinhala leading-relaxed">
+            ඔබේ දුරකථනයේ ජපන් කටහඬක් ස්ථාපනය කර නොමැති නම් Google Gemini Cloud TTS තෝරා තබන්න.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => onUpdateSettings({ ...settings, ttsEngine: 'gemini', ttsVoice: 'Kore' })}
+            className={`p-4 rounded-2xl border text-left transition flex flex-col justify-between ${
+              settings.ttsEngine === 'gemini'
+                ? 'border-purple-500 bg-purple-50/50 dark:bg-purple-950/40 ring-2 ring-purple-500/20'
+                : 'border-slate-200 dark:border-slate-800 hover:border-slate-300'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-1.5 font-sans">
+                <Sparkles className="w-4 h-4 text-purple-600" />
+                Google Gemini Cloud TTS
+              </span>
+              {settings.ttsEngine === 'gemini' && (
+                <span className="text-[10px] bg-purple-600 text-white px-2 py-0.5 rounded-full font-bold">සක්‍රියයි</span>
+              )}
+            </div>
+            <p className="text-xs text-slate-500 font-sinhala">
+              ස්වභාවික මිනිස් ජපන් උච්චාරණය (gemini-3.8-flash-lite-tts). සියලුම උපාංගවල ක්‍රියා කරයි.
+            </p>
+            <span className="text-[10px] font-semibold text-purple-600 dark:text-purple-400 mt-2 block">
+              නිර්දේශිතයි (Recommended)
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onUpdateSettings({ ...settings, ttsEngine: 'native' })}
+            className={`p-4 rounded-2xl border text-left transition flex flex-col justify-between ${
+              settings.ttsEngine === 'native'
+                ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/40 ring-2 ring-emerald-500/20'
+                : 'border-slate-200 dark:border-slate-800 hover:border-slate-300'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-1.5 font-sans">
+                <Cpu className="w-4 h-4 text-emerald-600" />
+                Native Web Speech API
+              </span>
+              {settings.ttsEngine === 'native' && (
+                <span className="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-bold">සක්‍රියයි</span>
+              )}
+            </div>
+            <p className="text-xs text-slate-500 font-sinhala">
+              ඔබේ දුරකථනයේ සවි කර ඇති ජපන් කටහඬ. අන්තර්ජාලය නොමැතිව (Offline) ක්‍රියා කරයි.
+            </p>
+            <span className="text-[10px] font-semibold text-slate-400 mt-2 block">
+              නොමිලේ • ක්ෂණිකයි
+            </span>
+          </button>
+        </div>
+
+        {/* Speed Slider */}
+        <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-bold text-slate-700 dark:text-slate-300 font-sinhala flex items-center gap-1.5">
+              <Sliders className="w-3.5 h-3.5 text-slate-500" />
+              කථන වේගය (Speech Speed):
+            </span>
+            <span className="font-bold text-emerald-600 dark:text-emerald-400">{settings.ttsSpeed}x</span>
+          </div>
+          <input
+            type="range"
+            min="0.6"
+            max="1.3"
+            step="0.05"
+            value={settings.ttsSpeed}
+            onChange={e => onUpdateSettings({ ...settings, ttsSpeed: parseFloat(e.target.value) })}
+            className="w-full accent-emerald-600 cursor-pointer"
+          />
+        </div>
       </div>
 
       {/* Sinhala Typography & Font Size */}

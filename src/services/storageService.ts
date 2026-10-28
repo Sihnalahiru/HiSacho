@@ -21,8 +21,8 @@ export interface PracticeAttempt {
 
 export const DEFAULT_SETTINGS: UserSettings = {
   theme: 'light',
-  ttsEngine: 'native',
-  ttsVoice: '',
+  ttsEngine: 'gemini', // Default to high-fidelity Gemini Japanese TTS for authentic pronunciation
+  ttsVoice: 'Kore',
   ttsSpeed: 0.95,
   showJapaneseScript: false, // Default hidden per user requirements
   sinhalaFontSize: 'normal',
@@ -114,7 +114,13 @@ class StorageService {
   }
 
   public getSettings(): UserSettings {
-    return this.getItem<UserSettings>(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+    const saved = this.getItem<UserSettings>(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+    return {
+      ...DEFAULT_SETTINGS,
+      ...saved,
+      ttsEngine: saved.ttsEngine || 'gemini',
+      ttsVoice: saved.ttsVoice || (saved.ttsEngine === 'native' ? '' : 'Kore'),
+    };
   }
 
   public saveSettings(settings: UserSettings): void {

@@ -101,11 +101,19 @@ export const SimulationView: React.FC<SimulationViewProps> = ({ settings, onFini
 
   const handlePlayQuestionVoice = async () => {
     if (!currentQ) return;
+    if (isPlayingQuestion) {
+      audioService.stop();
+      setIsPlayingQuestion(false);
+      return;
+    }
+    audioService.stop();
+    setIsPlayingAnswer(false);
     setIsPlayingQuestion(true);
     await audioService.playJapanese(currentQ.questionJapanese, {
       engine: settings.ttsEngine,
       voiceName: settings.ttsVoice,
       rate: settings.ttsSpeed,
+      onStart: () => setIsPlayingQuestion(true),
       onEnd: () => setIsPlayingQuestion(false),
       onError: () => setIsPlayingQuestion(false),
     });
@@ -113,11 +121,19 @@ export const SimulationView: React.FC<SimulationViewProps> = ({ settings, onFini
 
   const handlePlayAnswerVoice = async () => {
     if (!currentQ) return;
+    if (isPlayingAnswer) {
+      audioService.stop();
+      setIsPlayingAnswer(false);
+      return;
+    }
+    audioService.stop();
+    setIsPlayingQuestion(false);
     setIsPlayingAnswer(true);
     await audioService.playJapanese(currentQ.answerJapanese, {
       engine: settings.ttsEngine,
       voiceName: settings.ttsVoice,
       rate: settings.ttsSpeed,
+      onStart: () => setIsPlayingAnswer(true),
       onEnd: () => setIsPlayingAnswer(false),
       onError: () => setIsPlayingAnswer(false),
     });
