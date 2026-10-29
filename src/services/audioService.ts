@@ -2,7 +2,7 @@ export type TTSEngine = 'gemini' | 'native';
 
 export interface AudioPlayOptions {
   engine?: TTSEngine;
-  voiceName?: string; // Gemini voice: 'Kore', 'Puck', 'Fenrir', etc. Or native voice URI
+  voiceName?: string; // Gemini voice: 'Kore', 'Puck', etc. Or native voice URI/name
   rate?: number; // 0.6 to 1.5
   onLoading?: () => void;
   onStart?: () => void;
@@ -29,16 +29,26 @@ class AudioService {
   private currentAudioElement: HTMLAudioElement | null = null;
   private sharedAudioElement: HTMLAudioElement | null = null;
   private currentAudioSource: AudioBufferSourceNode | null = null;
-  private currentUtterance: SpeechSynthesisUtterance | null = null;
+  private activeUtterances: SpeechSynthesisUtterance[] = [];
   private nativeVoices: SpeechSynthesisVoice[] = [];
   private audioCache = new Map<string, string>(); // base64 cached audio
   private preloadingSet = new Set<string>(); // currently fetching keys
   private audioContext: AudioContext | null = null;
   private currentObjectUrl: string | null = null;
   private isAudioUnlocked = false;
+  // If static hosting (GitHub Pages, etc) or 429 quota exhausted, avoid failing fetch calls
+  private backendAvailable: boolean | null = null;
 
   constructor() {
     if (typeof window !== 'undefined') {
+      // Check if static hosting like GitHub Pages
+      if (
+        window.location.hostname.endsWith('github.io') ||
+        window.location.protocol === 'file:'
+      ) {
+        this.backendAvailable = false;
+      }
+
       try {
         if ('speechSynthesis' in window && window.speechSynthesis) {
           this.initVoices();
@@ -64,13 +74,13 @@ class AudioService {
   }
 
   /**
-   * Synchronously pre-warms the Web Audio API Context and Media subsystem within a user gesture.
+   * Synchronously pre-warms the Web Audio API Context, Media subsystem, and SpeechSynthesis.
    * CRITICAL for iOS Safari and iframe environments to bypass autoplay restrictions.
    */
   public prepareForPlayback(): void {
     if (typeof window === 'undefined') return;
 
-    // 1. Web Audio API Context synchronous resume & 1-frame tick
+    // 1. Web Audio API Context synchronous resume & 1-sample tick
     try {
       const AudioCtxClass = window.AudioContext || (window as any).webkitAudioContext;
       if (AudioCtxClass) {
@@ -115,6 +125,22 @@ class AudioService {
       console.warn('[AudioService] HTMLAudioElement prime guarded:', e);
     }
 
+    // 3. Prime Web Speech Synthesis on iOS WebKit
+    try {
+      if ('speechSynthesis' in window && window.speechSynthesis) {
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+        }
+        // iOS WebKit quirk: activating an utterance inside a touch token primes the synthesizer
+        const dummy = new SpeechSynthesisUtterance(' ');
+        dummy.volume = 0.01;
+        dummy.rate = 10;
+        window.speechSynthesis.speak(dummy);
+      }
+    } catch (e) {
+      // ignore
+    }
+
     this.isAudioUnlocked = true;
   }
 
@@ -143,7 +169,15 @@ class AudioService {
 
   public getJapaneseNativeVoices(): SpeechSynthesisVoice[] {
     const all = this.getAvailableNativeVoices();
-    const jaVoices = all.filter(v => v.lang.toLowerCase().startsWith('ja') || v.lang.includes('JP'));
+    const jaVoices = all.filter(
+      v =>
+        v.lang.toLowerCase().startsWith('ja') ||
+        v.lang.includes('JP') ||
+        v.name.includes('Japanese') ||
+        v.name.includes('Kyoko') ||
+        v.name.includes('Otoya') ||
+        v.name.includes('Hattori')
+    );
 
     // Deduplicate voices with identical voiceURI or name
     const seen = new Set<string>();
@@ -202,11 +236,13 @@ class AudioService {
     // 3. Stop SpeechSynthesis
     if (typeof window !== 'undefined' && 'speechSynthesis' in window && window.speechSynthesis) {
       try {
-        window.speechSynthesis.cancel();
+        if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.cancel();
+        }
       } catch (e) {
         // ignore
       }
-      this.currentUtterance = null;
+      this.activeUtterances = [];
     }
   }
 
@@ -214,7 +250,7 @@ class AudioService {
    * Pre-fetches and caches Japanese audio in the background so that click-to-play is instantaneous
    */
   public async preloadAudio(text: string, voiceName: string = 'Kore'): Promise<void> {
-    if (!text || typeof window === 'undefined') return;
+    if (!text || typeof window === 'undefined' || this.backendAvailable === false) return;
     const trimmed = text.trim();
     const cacheKey = `${voiceName}:${trimmed}`;
     if (this.audioCache.has(cacheKey) || this.preloadingSet.has(cacheKey)) return;
@@ -230,7 +266,11 @@ class AudioService {
         const data = await res.json();
         if (data.audioData) {
           this.audioCache.set(cacheKey, data.audioData);
+        } else if (data.code === 'FALLBACK_NATIVE') {
+          this.backendAvailable = false;
         }
+      } else {
+        if (res.status === 404) this.backendAvailable = false;
       }
     } catch (e) {
       // Preload fail is non-fatal
@@ -240,8 +280,8 @@ class AudioService {
   }
 
   /**
-   * Main play method with immediate gesture-unlock, Web Audio primary execution,
-   * HTMLAudioElement fallback, and native Web Speech API recovery.
+   * Main play method with immediate gesture-unlock, instant native fallback for zero-latency,
+   * Web Audio primary execution, and Web Speech API recovery.
    */
   public async playJapanese(text: string, options: AudioPlayOptions = {}): Promise<void> {
     // Synchronously prepare audio pipeline within user gesture!
@@ -249,7 +289,7 @@ class AudioService {
     this.stop();
 
     const {
-      engine = 'gemini',
+      engine = 'native',
       voiceName = 'Kore',
       rate = 1.0,
       onLoading,
@@ -264,53 +304,31 @@ class AudioService {
     }
 
     const trimmedText = text.trim();
-    const jaNativeVoices = this.getJapaneseNativeVoices();
 
-    // If native engine requested but device has NO Japanese voice installed:
-    // Seamlessly route to Gemini TTS rather than failing silently or speaking with English accent!
-    if (engine === 'native' && jaNativeVoices.length === 0) {
-      console.info('[AudioService] No ja-JP voice found on this device. Auto-routing to Google Gemini TTS.');
-      try {
-        onLoading?.();
-        await this.playViaGeminiTTS(trimmedText, voiceName || 'Kore', rate, onStart, onEnd);
-        return;
-      } catch (geminiErr) {
-        console.warn('[AudioService] Gemini TTS fallback failed, attempting native browser speak:', geminiErr);
-        this.playViaNativeSpeech(trimmedText, rate, voiceName, onStart, onEnd, onError);
-        return;
-      }
+    // IF engine is native OR backend is known to be unavailable (e.g. GitHub Pages or quota exceeded):
+    // Execute Native Japanese Speech SYNCHRONOUSLY right now within the user gesture!
+    if (engine === 'native' || this.backendAvailable === false) {
+      this.playViaNativeSpeech(trimmedText, rate, voiceName, onStart, onEnd, onError);
+      return;
     }
 
-    if (engine === 'gemini') {
-      try {
-        onLoading?.();
-        await this.playViaGeminiTTS(trimmedText, voiceName || 'Kore', rate, onStart, onEnd);
-      } catch (err: any) {
-        console.warn('[AudioService] Gemini TTS playback failed. Falling back seamlessly to Native speech:', err?.message || err);
-        // Fall back to native
-        this.playViaNativeSpeech(trimmedText, rate, voiceName, onStart, onEnd, (nativeErr) => {
-          console.error('[AudioService] Both Gemini TTS and Native speech failed:', nativeErr);
-          onError?.(err || nativeErr);
-        });
-      }
-    } else {
-      // User explicitly selected native
-      this.playViaNativeSpeech(trimmedText, rate, voiceName, onStart, onEnd, async (nativeErr) => {
-        console.warn('[AudioService] Native speech error, trying Gemini TTS as fallback:', nativeErr);
-        try {
-          onLoading?.();
-          await this.playViaGeminiTTS(trimmedText, 'Kore', rate, onStart, onEnd);
-        } catch (fallbackErr) {
-          onError?.(nativeErr);
-        }
+    // Otherwise, try Gemini Cloud TTS
+    try {
+      onLoading?.();
+      await this.playViaGeminiTTS(trimmedText, voiceName || 'Kore', rate, onStart, onEnd);
+    } catch (err: any) {
+      console.warn('[AudioService] Gemini TTS unavailable, routing immediately to Native speech:', err?.message || err);
+      this.backendAvailable = false;
+      // Fall back to native
+      this.playViaNativeSpeech(trimmedText, rate, voiceName, onStart, onEnd, (nativeErr) => {
+        console.error('[AudioService] Both Gemini TTS and Native speech failed:', nativeErr);
+        onError?.(err || nativeErr);
       });
     }
   }
 
   /**
    * Synthesizes and plays audio via Gemini 3.8 Flash Lite TTS
-   * Strategy 1: Web Audio API (Low latency, bypasses iframe media restrictions)
-   * Strategy 2: Shared primed HTMLAudioElement with Blob URL
    */
   private async playViaGeminiTTS(
     text: string,
@@ -333,11 +351,13 @@ class AudioService {
       });
 
       if (!response.ok) {
+        if (response.status === 404) this.backendAvailable = false;
         throw new Error(`TTS server HTTP error: ${response.status}`);
       }
 
       const data = await response.json();
       if (data.code === 'FALLBACK_NATIVE' || data.error) {
+        this.backendAvailable = false;
         throw new Error(data.error || 'Server requested fallback to native');
       }
 
@@ -362,7 +382,6 @@ class AudioService {
           await this.audioContext.resume();
         }
 
-        // Decode audio buffer (with Promise and Callback dual support for WebKit)
         const bufferCopy = arrayBuffer.slice(0);
         const audioBuffer = await this.decodeAudioDataPolyfill(this.audioContext, bufferCopy);
 
@@ -472,7 +491,8 @@ class AudioService {
   }
 
   /**
-   * Native browser SpeechSynthesis (Web Speech API)
+   * Native browser SpeechSynthesis (Web Speech API).
+   * Robust implementation avoiding iOS WebKit garbage collection and gesture loss.
    */
   private playViaNativeSpeech(
     text: string,
@@ -490,9 +510,11 @@ class AudioService {
       return;
     }
 
-    // Cancel any stuck utterances and resume paused state
     try {
-      window.speechSynthesis.cancel();
+      // Only cancel if actively speaking
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+      }
       if (window.speechSynthesis.paused) {
         window.speechSynthesis.resume();
       }
@@ -502,7 +524,7 @@ class AudioService {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'ja-JP';
-    utterance.rate = Math.min(Math.max(rate, 0.6), 1.5);
+    utterance.rate = Math.min(Math.max(rate, 0.7), 1.3);
     utterance.pitch = 1.0;
 
     // Try to find Japanese voice
@@ -519,28 +541,37 @@ class AudioService {
       utterance.voice = selectedVoice;
     }
 
+    // Keep utterance in instance array to avoid garbage collection bug on iOS Safari
+    this.activeUtterances.push(utterance);
+
     utterance.onstart = () => {
       onStart?.();
     };
 
+    const cleanup = () => {
+      const idx = this.activeUtterances.indexOf(utterance);
+      if (idx !== -1) {
+        this.activeUtterances.splice(idx, 1);
+      }
+    };
+
     utterance.onend = () => {
-      this.currentUtterance = null;
+      cleanup();
       onEnd?.();
     };
 
     utterance.onerror = (e) => {
-      this.currentUtterance = null;
+      cleanup();
       if (e.error !== 'interrupted' && e.error !== 'canceled') {
         onError?.(e);
       }
       onEnd?.();
     };
 
-    this.currentUtterance = utterance;
     try {
       window.speechSynthesis.speak(utterance);
     } catch (e) {
-      this.currentUtterance = null;
+      cleanup();
       onError?.(e);
       onEnd?.();
     }

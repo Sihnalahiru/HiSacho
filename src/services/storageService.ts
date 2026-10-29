@@ -8,6 +8,7 @@ export interface UserSettings {
   showJapaneseScript: boolean;
   sinhalaFontSize: 'normal' | 'large' | 'huge';
   autoPlayQuestion: boolean;
+  userGeminiApiKey?: string;
 }
 
 export interface PracticeAttempt {
@@ -21,12 +22,13 @@ export interface PracticeAttempt {
 
 export const DEFAULT_SETTINGS: UserSettings = {
   theme: 'light',
-  ttsEngine: 'gemini', // Default to high-fidelity Gemini Japanese TTS for authentic pronunciation
-  ttsVoice: 'Kore',
+  ttsEngine: 'native', // Native Web Speech provides instant, 100% offline, zero-quota Japanese audio on all devices & GitHub Pages
+  ttsVoice: '',
   ttsSpeed: 0.95,
   showJapaneseScript: false, // Default hidden per user requirements
   sinhalaFontSize: 'normal',
   autoPlayQuestion: false,
+  userGeminiApiKey: '',
 };
 
 const STORAGE_KEYS = {

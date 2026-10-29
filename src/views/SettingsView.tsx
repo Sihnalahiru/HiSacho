@@ -96,32 +96,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button
             type="button"
-            onClick={() => onUpdateSettings({ ...settings, ttsEngine: 'gemini', ttsVoice: 'Kore' })}
-            className={`p-4 rounded-2xl border text-left transition flex flex-col justify-between ${
-              settings.ttsEngine === 'gemini'
-                ? 'border-purple-500 bg-purple-50/50 dark:bg-purple-950/40 ring-2 ring-purple-500/20'
-                : 'border-slate-200 dark:border-slate-800 hover:border-slate-300'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-1">
-              <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-1.5 font-sans">
-                <Sparkles className="w-4 h-4 text-purple-600" />
-                Google Gemini Cloud TTS
-              </span>
-              {settings.ttsEngine === 'gemini' && (
-                <span className="text-[10px] bg-purple-600 text-white px-2 py-0.5 rounded-full font-bold">සක්‍රියයි</span>
-              )}
-            </div>
-            <p className="text-xs text-slate-500 font-sinhala">
-              ස්වභාවික මිනිස් ජපන් උච්චාරණය (gemini-3.8-flash-lite-tts). සියලුම උපාංගවල ක්‍රියා කරයි.
-            </p>
-            <span className="text-[10px] font-semibold text-purple-600 dark:text-purple-400 mt-2 block">
-              නිර්දේශිතයි (Recommended)
-            </span>
-          </button>
-
-          <button
-            type="button"
             onClick={() => onUpdateSettings({ ...settings, ttsEngine: 'native' })}
             className={`p-4 rounded-2xl border text-left transition flex flex-col justify-between ${
               settings.ttsEngine === 'native'
@@ -139,10 +113,36 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               )}
             </div>
             <p className="text-xs text-slate-500 font-sinhala">
-              ඔබේ දුරකථනයේ සවි කර ඇති ජපන් කටහඬ. අන්තර්ජාලය නොමැතිව (Offline) ක්‍රියා කරයි.
+              ඔබේ දුරකථනයේ සවි කර ඇති ජපන් කටහඬ. කිසිදු සීමාවක් නොමැතිව 100% නොමිලේ, Offline සහ GitHub Pages හි ක්ෂණිකව ක්‍රියා කරයි.
             </p>
-            <span className="text-[10px] font-semibold text-slate-400 mt-2 block">
-              නොමිලේ • ක්ෂණිකයි
+            <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 mt-2 block">
+              ක්ෂණිකයි • නොමිලේ (Offline & GitHub Pages)
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onUpdateSettings({ ...settings, ttsEngine: 'gemini', ttsVoice: 'Kore' })}
+            className={`p-4 rounded-2xl border text-left transition flex flex-col justify-between ${
+              settings.ttsEngine === 'gemini'
+                ? 'border-purple-500 bg-purple-50/50 dark:bg-purple-950/40 ring-2 ring-purple-500/20'
+                : 'border-slate-200 dark:border-slate-800 hover:border-slate-300'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-1.5 font-sans">
+                <Sparkles className="w-4 h-4 text-purple-600" />
+                Google Gemini Cloud TTS
+              </span>
+              {settings.ttsEngine === 'gemini' && (
+                <span className="text-[10px] bg-purple-600 text-white px-2 py-0.5 rounded-full font-bold">සක්‍රියයි</span>
+              )}
+            </div>
+            <p className="text-xs text-slate-500 font-sinhala">
+              ස්වභාවික මිනිස් ජපන් උච්චාරණය (gemini-3.8-flash-lite-tts). Cloud API හරහා ශබ්දය සම්ප්‍රේෂණය වේ.
+            </p>
+            <span className="text-[10px] font-semibold text-purple-600 dark:text-purple-400 mt-2 block">
+              AI Powered Studio Voice
             </span>
           </button>
         </div>
